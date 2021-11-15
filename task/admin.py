@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Product, Agency, Secure, Cliente
+from . models import Product, Agency, Secure, Renew, Cliente
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -17,12 +17,18 @@ class SecureAdmin(admin.ModelAdmin):
     list_display = ('name_secure','comments','update_at')
 
 
+class RenewAdmin(admin.ModelAdmin):
+    fields = ('name_renew','comments',)
+    list_display = ('name_renew','comments','update_at')
+
+
 class ClienteAdmin(admin.ModelAdmin):
-    fields = ('name','cpf','cnpj','prod','agency','secure','conta','gerency','policy','amount_paid','tel1','tel2','cel1','cel2','email','comments','date_contract',)
-    list_display = ('name','cpf','cnpj','prod','agency','secure','gerency','conta','policy','amount_paid','tel1','tel2','cel1','cel2','email','comments','date_contract',)
+    fields = ('name','renew','cpf','cnpj','prod','agency','secure','conta','gerency','policy','amount_paid','tel1','tel2','cel1','cel2','email','comments','date_contract',)
+    list_display = ('name','renew','cpf','cnpj','prod','agency','secure','gerency','conta','policy','amount_paid','tel1','tel2','cel1','cel2','email','comments','date_contract',)
 
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Secure, SecureAdmin)
+admin.site.register(Renew, RenewAdmin)
 admin.site.register(Cliente, ClienteAdmin)

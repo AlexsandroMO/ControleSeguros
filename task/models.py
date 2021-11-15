@@ -34,9 +34,21 @@ class Secure(models.Model): #Títulos de projeto
         return self.name_secure
 
 
+class Renew(models.Model): #Títulos de projeto
+
+    name_renew = models.CharField(max_length=255, verbose_name='TIPOS DE SEGUROS')
+    comments = models.TextField(blank=True, null=False,verbose_name='OBS')
+    update_at = models.DateTimeField(auto_now=True)
+    create_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name_renew
+
+
 class Cliente(models.Model): #Títulos de projeto
 
     name = models.CharField(max_length=255, verbose_name='NOME DO CLIENTE')
+    renew = models.ForeignKey(Renew, on_delete=models.CASCADE, verbose_name='RENOVAÇÃO')
     cpf = models.CharField(max_length=11, blank=True, null=False, verbose_name='CPF')
     #cpf = CPFField('cpf', blank=True, null=False, verbose_name='CPF')
     cnpj = models.CharField(max_length=14, blank=True, null=False, verbose_name='CNPJ')
@@ -107,3 +119,4 @@ class Upload(models.Model): #Upload de arquivos
     def __str__(self):
         return str(self.arq)
 '''
+

@@ -1,14 +1,14 @@
 
 from django import forms
-#from .models import Project, LdProj
+from .models import Agency
 
 
-'''class ProjectForm(forms.ModelForm):
+class AgencyForm(forms.ModelForm):
     class Meta:
-        model = Project
-        fields = ('project_name', 'company','code','comments')
+        model = Agency
+        fields = ('name_agency', 'comments')
 
-
+'''
 class LdProjForm(forms.ModelForm):
     class Meta:
         model = LdProj

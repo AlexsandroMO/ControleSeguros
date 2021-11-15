@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Controle de Seguros</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Starter Page</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+
+    <!-- /.card-header -->
+            <div class="card card-warning card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-edit"></i>
+                  Spreadsheet Load
+                </h3>
+              </div>
+
+              <div class="card-body">
+
+                <div class="text-muted mt-3" id="text-mute">
+                  Are you sure the Upload Table process can be executed?
+                </div>
+
+                <a href="/Create_DB"><button type="button" class="btn btn-success toastrDefaultSuccess">
+                  Yes I'm!
+                </button></a>
+                <a href="/"><button type="button" class="btn btn-danger toastrDefaultError">
+                  No, I'm Not Sure
+                </button></a>
+
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+
+{% endblock %}
