@@ -1,3 +1,6 @@
+#https://www.alura.com.br/artigos/django-query-sets-e-orm?gclid=CjwKCAiAp8iMBhAqEiwAJb94zwnHSnYj2h_GswQd-LI9sPtYwfhFICsMB790UGFjzzg5ONKHcXmCeRoC5vEQAvD_BwE
+#https://stackoverflow.com/questions/4668619/how-do-i-filter-query-objects-by-date-range-in-django
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -6,7 +9,7 @@ from .models import Cliente, Agency #Employee, Project, DocumentModel, LdProj, S
 from .forms import AgencyForm #, LdProjForm #, SubjectForm, PageTypeForm, DocTypeForm, PageformatForm, DocumentModelForm, EmployeeForm, StatusDocForm, ActionForm #, LdProjForm, CotationForm
 from django.contrib import messages
 import code as CODE
-from datetime import datetime
+from datetime import datetime, timedelta
 
 date_today = datetime.today()
 
@@ -15,7 +18,17 @@ def home(request):
     #AuthUser = auth_user.objects.all()
     #user = request.user
 
-    return render(request,'task/index.html') #, {'user':user})
+    startdate = date_today
+    enddate = startdate + timedelta(days=300)
+    print('>>>>>>>>>>', startdate, enddate)
+    # Sample.objects.filter(date__range=[startdate, enddate])
+    Clientes = Cliente.objects.filter(date_contract__range=[startdate, enddate])
+
+    #Clientes = Cliente.objects.all()
+
+
+
+    return render(request,'task/index.html', {'Clientes':Clientes}) #, {'user':user})
 
 
 @login_required
