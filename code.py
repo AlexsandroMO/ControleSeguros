@@ -7,6 +7,11 @@ date_today = datetime.today()
 
 df = pd.read_excel('media/CLIENTES_SEGUROS.xlsx')
 
+pd.to_datetime(df['DATA']).apply(lambda x: x.date())
+#date_object = datetime.strptime(str(a), '%Y-%m-%d')
+
+print(df['DATA'])
+
 def read_all(): #DB Tables Read
 
 	return df
@@ -91,6 +96,23 @@ def insert_renew(name_ren, commit, date_today):
     qsl_datas = f"""
                 INSERT INTO task_renew(name_renew, comments, update_at, create_at)
                 VALUES ('{name_ren}', '{commit}','{date_today}','{date_today}');
+                """
+    c.execute(qsl_datas)
+    conn.commit()
+    conn.close()
+
+
+def insert_clientes(name_,renew_,cpf_,cnpj_,prod_,agency_,secure_,gerency_,conta_,policy_,
+                amount_paid_,tel1_,tel2_,cel1_,cel2_,email_,comments_,date_contract_,date_today):
+    conn = sqlite3.connect('db.sqlite3')
+    c = conn.cursor()
+
+    qsl_datas = f"""
+                INSERT INTO task_cliente(name,renew_id,cpf,cnpj,prod_id,agency_id,secure_id,gerency,conta,policy,
+                amount_paid,tel1,tel2,cel1,cel2,email,comments,date_contract,update_at,create_at)
+                VALUES ('{name_}',{renew_},'{cpf_}','{cnpj_}',{prod_},{agency_},{secure_},
+                '{gerency_}','{conta_}','{policy_}',{amount_paid_},'{tel1_}','{tel2_}','{cel1_}',
+                '{cel2_}','{email_}','{comments_}','{date_contract_}','{date_today}','{date_today}');
                 """
     c.execute(qsl_datas)
     conn.commit()
