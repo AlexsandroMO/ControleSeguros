@@ -1,6 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+class AuthUser(models.Model): #Títulos de projeto
+
+    name_complet = models.CharField(max_length=255, verbose_name='NOME USUÁRIO')
+    name_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    photo = models.FileField(upload_to='uploads/', help_text='ARQUIVO FOTO')
+
+    def __str__(self):
+        return self.name_complet
+
 
 class Product(models.Model): #Títulos de projeto
 
@@ -63,7 +72,7 @@ class Cliente(models.Model): #Títulos de projeto
     tel2 = models.CharField(max_length=10, blank=True, null=False, verbose_name='TELEFONE OPÇÃO 2')
     cel1 = models.CharField(max_length=11, blank=True, null=False, verbose_name='CELULAR OPÇÃO 1')
     cel2 = models.CharField(max_length=11, blank=True, null=False, verbose_name='CELULAR OPÇÃO 2')
-    email= models.CharField(max_length=255, blank=True, null=False, verbose_name='E-MAIL')
+    email = models.CharField(max_length=255, blank=True, null=False, verbose_name='E-MAIL')
     comments = models.TextField(blank=True, null=False, verbose_name='OBS')
     date_contract = models.DateField(blank=True, null=True, verbose_name='DATA SEGURO')
     #user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -72,6 +81,14 @@ class Cliente(models.Model): #Títulos de projeto
 
     def __str__(self):
         return self.name
+
+    
+class Upload(models.Model): #Upload de arquivos
+    arq = models.FileField(upload_to='uploads/', help_text='localizar Arquivo')
+    update_arq = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.arq)
 
 
 '''
@@ -111,12 +128,6 @@ class ProjControl(models.Model): #Tabela = Lista de Documentos LD
     def __str__(self):
         return str(self.proj_name)
 
-        
-class Upload(models.Model): #Upload de arquivos
-    arq = models.FileField(upload_to='uploads/', help_text='localizar Arquivo')
-    update_arq = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return str(self.arq)
 '''
 

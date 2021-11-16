@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from .models import Cliente, Agency #Employee, Project, DocumentModel, LdProj, Subject
+from .models import AuthUser, Cliente, Agency #Employee, Project, DocumentModel, LdProj, Subject
 from .forms import AgencyForm #, LdProjForm #, SubjectForm, PageTypeForm, DocTypeForm, PageformatForm, DocumentModelForm, EmployeeForm, StatusDocForm, ActionForm #, LdProjForm, CotationForm
 from django.contrib import messages
 import code as CODE
@@ -15,35 +15,42 @@ date_today = datetime.today()
 
 @login_required
 def home(request):
-    #AuthUser = auth_user.objects.all()
-    #user = request.user
+    
+    #tasksDoneRecently = Task.objects.filter(done='done', updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30)).count()
+    #tasksDone = Task.objects.filter(done='done', user=request.user).count()
+    #task.done = 'done'
 
-    startdate = date_today
-    enddate = startdate + timedelta(days=300)
-    print('>>>>>>>>>>', startdate, enddate)
+    AuthUsers = AuthUser.objects.filter(name_user=request.user)
+
+    startdate = date_today - timedelta(days=395)
+    enddate = date_today - timedelta(days=325)
+    print('>>>>>>>>>>', startdate, '++++++', enddate)
     # Sample.objects.filter(date__range=[startdate, enddate])
     Clientes = Cliente.objects.filter(date_contract__range=[startdate, enddate])
 
     #Clientes = Cliente.objects.all()
 
-
-
-    return render(request,'task/index.html', {'Clientes':Clientes}) #, {'user':user})
+    return render(request,'task/index.html', {'Clientes':Clientes, 'AuthUsers':AuthUsers}) #, {'user':user})
 
 
 @login_required
 def clients(request):
-    #AuthUser = auth_user.objects.all()
-    #user = request.user
-    Clientes = Cliente.objects.all()
 
-    return render(request,'task/clients-list.html', {'Clientes':Clientes}) #, {'user':user})
+    AuthUsers = AuthUser.objects.filter(name_user=request.user)
+    Clientes = Cliente.objects.all().order_by('name')
+
+    return render(request,'task/clients-list.html', {'Clientes':Clientes, 'AuthUsers':AuthUsers}) #, {'user':user})
 
 
+@login_required
 def Spreadsheet(request):
+    
+    AuthUsers = AuthUser.objects.filter(name_user=request.user)
 
-    return render(request,'task/carga-plan.html')
+    return render(request,'task/carga-plan.html',{'AuthUsers':AuthUsers})
 
+
+@login_required
 def CreateDB(request):
 
     read_item = CODE.creat_sub_item()
@@ -69,6 +76,9 @@ def CreateDB(request):
     read_sec = CODE.read_sql('task_secure')
     read_renew = CODE.read_sql('task_renew')
 
+    ag, prod, sec_, ren = 0,0,0,0
+    cpf, cnpj = '',''
+
     for a in read_df.index:
         for b in read_ag.index:
             if read_ag['name_agency'].loc[b] == str(read_df['AG'].loc[a]):
@@ -80,7 +90,7 @@ def CreateDB(request):
 
         for d in read_sec.index:
             if read_sec['name_secure'].loc[d] == read_df['TIPO_SEGURO'].loc[a]:
-                sec = read_sec['id'].loc[d]
+                sec_ = read_sec['id'].loc[d]
 
         for e in read_renew.index:
             if read_renew['name_renew'].loc[e] == read_df['REN'].loc[a]:
@@ -93,11 +103,12 @@ def CreateDB(request):
             cpf = read_df['CPF'].loc[a]
             cnpj = ''
 
-        CODE.insert_clientes(read_df['NOME_CLIENTE'].loc[a],ren,cpf,cnpj,prod,ag,sec,read_df['CORRETOR'].loc[a], \
+        CODE.insert_clientes(read_df['NOME_CLIENTE'].loc[a],ren,cpf,cnpj,prod,ag,sec_,read_df['CORRETOR'].loc[a], \
         '',read_df['APOLICE'].loc[a],read_df['VALOR'].loc[a],read_df['TEL1'].loc[a],read_df['TEL2'].loc[a], \
         read_df['CEL1'].loc[a], read_df['CEL2'].loc[a],'',read_df['OBS'].loc[a], \
         datetime.strptime(str(read_df['DATA'].loc[a]), '%Y-%m-%d %H:%M:%S').date(),date_today)
 
-    return render(request,'task/clients-list.html')
+    #return render(request,'task/clients-list.html')
+    return redirect('/')
 
 

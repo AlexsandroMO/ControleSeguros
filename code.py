@@ -102,8 +102,9 @@ def insert_renew(name_ren, commit, date_today):
     conn.close()
 
 
-def insert_clientes(name_,renew_,cpf_,cnpj_,prod_,agency_,secure_,gerency_,conta_,policy_,
-                amount_paid_,tel1_,tel2_,cel1_,cel2_,email_,comments_,date_contract_,date_today):
+def insert_clientes(name_,renew_,cpf_,cnpj_,prod_,agency_,secure_,gerency_,conta_,policy_,amount_paid_,tel1_,tel2_,cel1_,cel2_,email_,comments_,date_contract_,date_today):
+    print(name_,renew_,cpf_,cnpj_,prod_,agency_,secure_,gerency_,conta_,policy_,amount_paid_,tel1_,tel2_,cel1_,cel2_,email_,comments_,date_contract_,date_today)
+
     conn = sqlite3.connect('db.sqlite3')
     c = conn.cursor()
 
