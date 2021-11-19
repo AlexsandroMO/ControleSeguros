@@ -10,8 +10,6 @@ df = pd.read_excel('media/CLIENTES_SEGUROS.xlsx')
 pd.to_datetime(df['DATA']).apply(lambda x: x.date())
 #date_object = datetime.strptime(str(a), '%Y-%m-%d')
 
-print(df['DATA'])
-
 def read_all(): #DB Tables Read
 
 	return df
@@ -118,3 +116,35 @@ def insert_clientes(name_,renew_,cpf_,cnpj_,prod_,agency_,secure_,gerency_,conta
     c.execute(qsl_datas)
     conn.commit()
     conn.close()
+
+
+def create_table():
+    df = pd.read_excel('media/RENOVACAO.xlsx')
+
+    df = df[['RENOVA', 'PRODUTO', 'NOME_CLIENTE', 'TIPO_SEGURO', 'CPF', 'AG', 'APOLICE', 'VALOR','DATA', '_11', 'TEL1', 'CEL1', 'TEL2', 'CEL2', 'OBS']]
+    new_column = ['REN', 'PRODUTO', 'NOME_CLIENTE', 'TIPO_SEGURO', 'CPF', 'AG', 'APOLICE', 'VALOR', 'DATA', 'CORRETOR',  'TEL1', 'CEL1', 'TEL2', 'CEL2', 'OBS']
+
+    for a in range(0, len(df.columns)):
+        print(df.columns[a])
+        df.rename(columns={df.columns[a]:new_column[a]}, inplace=True)
+        
+    df.fillna('',inplace=True)
+
+    for a in range(0, len(df['CEL1'])):
+        df['TEL1'].loc[a] = str(df['TEL1'].loc[a])[:-2]
+        df['CEL1'].loc[a] = str(df['CEL1'].loc[a])[:-2]
+        df['TEL2'].loc[a] = str(df['TEL2'].loc[a])[:-2]
+        df['CEL2'].loc[a] = str(df['CEL2'].loc[a])[:-2]
+        
+    df.to_excel('media/CLIENTES_SEGUROS.xlsx')
+
+
+
+
+
+# data = input('= ')
+# lista = data.split(' ')
+# for a in lista:
+#     print('"{}",'.format(a), end=' N_NCR STATUS DESCRIPTION BIGRAMS PRIORITY MILESTONE FV DQR_F DQR_IND REGRESS_DECISION REGRESS REGRESS_STATUS REGRESS_DESCRIPTION DQR_UPDATED BIC BOC NOTES RESP CHANGE ACTION')
+
+

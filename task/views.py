@@ -24,7 +24,7 @@ def home(request):
 
     startdate = date_today - timedelta(days=395)
     enddate = date_today - timedelta(days=325)
-    print('>>>>>>>>>>', startdate, '++++++', enddate)
+    #print('>>>>>>>>>>', startdate, '++++++', enddate)
     # Sample.objects.filter(date__range=[startdate, enddate])
     Clientes = Cliente.objects.filter(date_contract__range=[startdate, enddate])
 
@@ -47,12 +47,40 @@ def Spreadsheet(request):
     
     AuthUsers = AuthUser.objects.filter(name_user=request.user)
 
+    
+
     return render(request,'task/carga-plan.html',{'AuthUsers':AuthUsers})
 
 
 @login_required
 def CreateDB(request):
 
+    if request.method == 'POST':
+        print('>>>>>>>>>>>>>>>>',request.method)
+    #     form = DocumentForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         newdoc = Document(docfile = request.FILES['docfile'])
+    #         newdoc.save()
+
+    #         # Redirect to the document list after POST
+    #         return HttpResponseRedirect(reverse('myapp.views.list'))
+    # else:
+    #     form = DocumentForm() # A empty, unbound form
+    
+    # if 'photo' in request.files:
+    #     photo = request.files['photo']
+    #     print('---------', photo)
+    #     if photo.filename != '':
+    #         print('foi')
+    #         photo.save(os.path.join('static/', photo.filename))
+
+
+
+
+
+    """ 
+
+    CODE.create_table()
     read_item = CODE.creat_sub_item()
 
     for i in read_item[0][0]:
@@ -103,11 +131,40 @@ def CreateDB(request):
             cpf = read_df['CPF'].loc[a]
             cnpj = ''
 
-        CODE.insert_clientes(read_df['NOME_CLIENTE'].loc[a],ren,cpf,cnpj,prod,ag,sec_,read_df['CORRETOR'].loc[a], \
-        '',read_df['APOLICE'].loc[a],read_df['VALOR'].loc[a],read_df['TEL1'].loc[a],read_df['TEL2'].loc[a], \
-        read_df['CEL1'].loc[a], read_df['CEL2'].loc[a],'',read_df['OBS'].loc[a], \
-        datetime.strptime(str(read_df['DATA'].loc[a]), '%Y-%m-%d %H:%M:%S').date(),date_today)
+        #----------------------------------------
+        if len(str(read_df['TEL1'].loc[a])) == 11:
+            cel1 = str(read_df['CEL1'].loc[a])[:-2]
+            tel1 = ''
+        else:
+            tel1 = str(read_df['TEL1'].loc[a])[:-2]
+            cel1 = ''
+        
+        if len(str(read_df['TEL2'].loc[a])) == 11:
+            cel2 = str(read_df['CEL2'].loc[a])[:-2]
+            tel2 = ''
+        else:
+            tel2 = str(read_df['TEL2'].loc[a])[:-2]
+            cel2 = ''
 
+        if len(str(read_df['CEL1'].loc[a])) == 11:
+            cel1 = str(read_df['CEL1'].loc[a])[:-2]
+            tel1 = ''
+        else:
+            tel1 = str(read_df['TEL1'].loc[a])[:-2]
+            cel1 = ''
+        
+        if len(str(read_df['CEL2'].loc[a])) == 11:
+            cel2 = str(read_df['CEL2'].loc[a])[:-2]
+            tel2 = ''
+        else:
+            tel2 = str(read_df['TEL2'].loc[a])[:-2]
+            cel2 = ''
+        #----------------------------------------
+
+        CODE.insert_clientes(read_df['NOME_CLIENTE'].loc[a],ren,cpf,cnpj,prod,ag,sec_,read_df['CORRETOR'].loc[a], \
+        '',read_df['APOLICE'].loc[a],read_df['VALOR'].loc[a],tel1,tel2, cel1, cel2,'',read_df['OBS'].loc[a], \
+        datetime.strptime(str(read_df['DATA'].loc[a]), '%Y-%m-%d %H:%M:%S').date(),date_today)
+    """
     #return render(request,'task/clients-list.html')
     return redirect('/')
 

@@ -28,10 +28,22 @@
                 </h3>
               </div>
 
+
+              
+
               <div class="card-body">
+                <div class="text-muted mt-3" id="text-mute">
+                  Escolha os Documentos a ser Importados
+                </div>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" id="file-ajust" name="photo"/> <!--multiple="multiple"-->
+                        <input type="submit" class="btn btn-secondary" value="Enviar" id="send-ajust"/>
+                    </div>
+                </form>
 
                 <div class="text-muted mt-3" id="text-mute">
-                  Are you sure the Upload Table process can be executed?
+                  Tem certeza que o procedimento pode ser relaizado?
                 </div>
 
                 <a href="/Create_DB"><button type="button" class="btn btn-success toastrDefaultSuccess">
@@ -46,6 +58,10 @@
             </div>
           </div>
     <!-- /.card-body -->
+
+
+
+
   </div>
 </div>
 

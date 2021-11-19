@@ -68,10 +68,10 @@ class Cliente(models.Model): #Títulos de projeto
     secure = models.ForeignKey(Secure, on_delete=models.CASCADE, verbose_name='SEGURO')
     policy = models.CharField(max_length=30, verbose_name='NÚMERO DA APOLICE')
     amount_paid = models.DecimalField(max_digits=11, decimal_places=2, verbose_name='VALOR PAGO') #default_currency='BRA'
-    tel1 = models.CharField(max_length=10, blank=True, null=False, verbose_name='TELEFONE OPÇÃO 1')
-    tel2 = models.CharField(max_length=10, blank=True, null=False, verbose_name='TELEFONE OPÇÃO 2')
-    cel1 = models.CharField(max_length=11, blank=True, null=False, verbose_name='CELULAR OPÇÃO 1')
-    cel2 = models.CharField(max_length=11, blank=True, null=False, verbose_name='CELULAR OPÇÃO 2')
+    tel1 = models.CharField(max_length=10, blank=True, null=False, verbose_name='TELEFONE 1')
+    tel2 = models.CharField(max_length=10, blank=True, null=False, verbose_name='TELEFONE 2')
+    cel1 = models.CharField(max_length=11, blank=True, null=False, verbose_name='CELULAR 1')
+    cel2 = models.CharField(max_length=11, blank=True, null=False, verbose_name='CELULAR 2')
     email = models.CharField(max_length=255, blank=True, null=False, verbose_name='E-MAIL')
     comments = models.TextField(blank=True, null=False, verbose_name='OBS')
     date_contract = models.DateField(blank=True, null=True, verbose_name='DATA SEGURO')
@@ -82,7 +82,7 @@ class Cliente(models.Model): #Títulos de projeto
     def __str__(self):
         return self.name
 
-    
+
 class Upload(models.Model): #Upload de arquivos
     arq = models.FileField(upload_to='uploads/', help_text='localizar Arquivo')
     update_arq = models.DateTimeField(auto_now=True)
