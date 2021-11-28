@@ -140,11 +140,118 @@ def create_table():
 
 
 
+def compare_tables():
 
+    conn = sqlite3.connect('db.sqlite3')
+    sql_datas = f"""
+				SELECT * FROM task_cliente;
+	"""
+    read_db = pd.read_sql_query(sql_datas, conn)
+    conn.close()
 
-# data = input('= ')
-# lista = data.split(' ')
-# for a in lista:
-#     print('"{}",'.format(a), end=' N_NCR STATUS DESCRIPTION BIGRAMS PRIORITY MILESTONE FV DQR_F DQR_IND REGRESS_DECISION REGRESS REGRESS_STATUS REGRESS_DESCRIPTION DQR_UPDATED BIC BOC NOTES RESP CHANGE ACTION')
+    df = read_db
+    df2 = pd.read_excel('media/CLIENTES_SEGUROS.xlsx')
 
+    #df.drop(columns=['Unnamed: 0'], inplace=True)
+    df2.drop(columns=['Unnamed: 0'], inplace=True)
 
+    df['ID'] = ''
+    df2['ID'] = ''
+
+    for a in df.index:
+        df['ID'].loc[a] = '{}{}'.format(df['CPF'].loc[a], df['APOLICE'].loc[a])
+
+    for b in df2.index:
+        df2['ID'].loc[b] = '{}{}'.format(df2['CPF'].loc[b], df2['APOLICE'].loc[b])
+
+    df.index = pd.Index(np.arange(0,len(df)))
+    df.index2 = pd.Index(np.arange(0,len(df_new)))
+
+    df['ST_REN'] = False
+    df['ST_PRODUTO'] = False
+    df['ST_NOME_CLIENTE'] = False
+    df['ST_TIPO_SEGURO'] = False
+    df['ST_AG'] = False
+    df['ST_VALOR'] = False
+    df['ST_DATA'] = False
+    df['ST_CORRETOR'] = False
+    df['ST_OBS'] = False
+    df['ST_TEL1'] = False
+    df['ST_CEL1'] = False
+    df['ST_TEL2'] = False
+    df['ST_CEL2'] = False
+
+    df2['ST_REN'] = False
+    df2['ST_PRODUTO'] = False
+    df2['ST_NOME_CLIENTE'] = False
+    df2['ST_TIPO_SEGURO'] = False
+    df2['ST_AG'] = False
+    df2['ST_VALOR'] = False
+    df2['ST_DATA'] = False
+    df2['ST_CORRETOR'] = False
+    df2['ST_OBS'] = False
+    df2['ST_TEL1'] = False
+    df2['ST_CEL1'] = False
+    df2['ST_TEL2'] = False
+    df2['ST_CEL2'] = False
+
+    for a in df.index:
+        for b in df2.index:
+            if df['ID'].loc[a] == df2['ID'].loc[b]:
+                if df['REN'].loc[a] != df2['REN'].loc[b]:
+                    df2['ST_REN'].loc[a] = True
+
+                if df['PRODUTO'].loc[a] != df2['PRODUTO'].loc[b]:
+                    df2['ST_PRODUTO'].loc[a] = True
+
+                if df['PRODUTO'].loc[a] != df2['PRODUTO'].loc[b]:
+                    df2['ST_PRODUTO'].loc[a] = True
+                    
+                if df['NOME_CLIENTE'].loc[a] != df2['NOME_CLIENTE'].loc[b]:
+                    df2['ST_NOME_CLIENTE'].loc[a] = True
+                    
+                if df['TIPO_SEGURO'].loc[a] != df2['TIPO_SEGURO'].loc[b]:
+                    df2['ST_TIPO_SEGURO'].loc[a] = True
+                    
+                if df['AG'].loc[a] != df2['AG'].loc[b]:
+                    df2['ST_AG'].loc[a] = True
+                    
+                if df['VALOR'].loc[a] != df2['VALOR'].loc[b]:
+                    df2['ST_VALOR'].loc[a] = True
+                    
+                if df['DATA'].loc[a] != df2['DATA'].loc[b]:
+                    df2['ST_DATA'].loc[a] = True
+                    
+                if df['CORRETOR'].loc[a] != df2['CORRETOR'].loc[b]:
+                    df2['ST_CORRETOR'].loc[a] = True
+                    
+                if df['OBS'].loc[a] != df2['OBS'].loc[b]:
+                    df2['ST_OBS'].loc[a] = True
+                    
+                if df['TEL1'].loc[a] != df2['TEL1'].loc[b]:
+                    df2['ST_TEL1'].loc[a] = True
+                    
+                if df['TEL2'].loc[a] != df2['TEL2'].loc[b]:
+                    df2['ST_TEL2'].loc[a] = True
+                    
+                if df['CEL1'].loc[a] != df2['CEL1'].loc[b]:
+                    df2['ST_CEL1'].loc[a] = True
+                    
+                if df['CEL2'].loc[a] != df2['CEL2'].loc[b]:
+                    df2['ST_CEL2'].loc[a] = True
+                    
+    df2['SEG_IGUAL'] = ''
+    for a in df.index:
+        for b in df2.index:
+            if df['ID'].loc[a] == df2['ID'].loc[b]:
+                df2['SEG_IGUAL'].loc[b] = 'x'
+
+    index_df = df2[df2['SEG_IGUAL'] == 'x'].index
+    df2.drop(index_df, inplace=True)
+    df2.reset_index()
+    df2['NEW'] = True
+
+    df_new = pd.concat([df, df2])
+    df_new .drop('SEG_IGUAL', axis=1, inplace=True)
+    
+    df_new.to_excel('media/CLIENTES_SEGUROS_Analyzed.xlsx')
